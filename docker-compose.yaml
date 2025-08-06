@@ -1,0 +1,30 @@
+services:
+  movieflix-postgresql:
+    container_name: movieflix-postgresql
+    image: bitnami/postgresql:17.2.0
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRESQL_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      POSTGRESQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      POSTGRESQL_DATABASE: ${SPRING_DATASOURCE_NAME}
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U ${SPRING_DATASOURCE_USERNAME} -d ${SPRING_DATASOURCE_USERNAME}',
+        ]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+    networks:
+      - movieflix-network
+    volumes:
+      - pg_data:/bitnami/postgresql
+
+networks:
+  movieflix-network:
+    driver: bridge
+
+volumes:
+  pg_data:
