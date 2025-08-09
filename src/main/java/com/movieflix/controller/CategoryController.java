@@ -35,8 +35,8 @@ public class CategoryController {
             @ApiResponse(responseCode = "200", description = "Receita gerada com sucesso"),
     })
     @GetMapping()
-    public ResponseEntity<List<Category>> getAllFoodItems() {
-        List<Category> foodItems = categoryService.findAll();
-        return ResponseEntity.ok(foodItems);
+    public ResponseEntity<List<Category>> findAllCategories() {
+        List<Category> categories = categoryService.findAll();
+        return ResponseEntity.ok(categories);
     }
 }
