@@ -43,10 +43,16 @@ public class CategoryController {
     @Operation(summary = "Get category by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get category"),
+            @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @GetMapping("/{id}")
     public ResponseEntity<Category> getByCategory(@PathVariable Long id) {
         Category category = categoryService.getById(id);
+
+        if (category == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
         return ResponseEntity.ok(category);
     }
 }
