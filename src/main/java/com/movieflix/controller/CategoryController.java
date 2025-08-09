@@ -32,11 +32,21 @@ public class CategoryController {
 
     @Operation(summary = "Get all categories")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Receita gerada com sucesso"),
+            @ApiResponse(responseCode = "200", description = "Get categories"),
     })
     @GetMapping()
     public ResponseEntity<List<Category>> findAllCategories() {
         List<Category> categories = categoryService.findAll();
         return ResponseEntity.ok(categories);
+    }
+
+    @Operation(summary = "Get category by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get category"),
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<Category> getByCategory(@PathVariable Long id) {
+        Category category = categoryService.getById(id);
+        return ResponseEntity.ok(category);
     }
 }
