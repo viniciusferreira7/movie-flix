@@ -40,19 +40,20 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
-    @Operation(summary = "Get category by id")
+    @Operation(summary = "Delete category by id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Get category"),
+            @ApiResponse(responseCode = "204", description = "Category deleted"),
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
-    @GetMapping("/{id}")
-    public ResponseEntity<Category> getByCategory(@PathVariable Long id) {
-        Category category = categoryService.getById(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
+        boolean deleted = categoryService.deleteById(id);
 
-        if (category == null) {
+        if (!deleted) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        return ResponseEntity.ok(category);
+        return ResponseEntity.noContent().build();
     }
+
 }
