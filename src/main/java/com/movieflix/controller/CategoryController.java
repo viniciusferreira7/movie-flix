@@ -1,6 +1,9 @@
 package com.movieflix.controller;
 
+import com.movieflix.controller.request.CategoryRequest;
+import com.movieflix.controller.response.CategoryResponse;
 import com.movieflix.entity.Category;
+import com.movieflix.mapper.CategoryMapper;
 import com.movieflix.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,8 +28,8 @@ public class CategoryController {
             @ApiResponse(responseCode = "201", description = "Category was successfully registered")
     })
     @PostMapping
-    public ResponseEntity<Void> createFoodItem(@RequestBody Category category) {
-        categoryService.create(category);
+    public ResponseEntity<Void> createFoodItem(@RequestBody CategoryRequest category) {
+        categoryService.create(CategoryMapper.toCategory(category));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -35,9 +38,28 @@ public class CategoryController {
             @ApiResponse(responseCode = "200", description = "Get categories"),
     })
     @GetMapping()
-    public ResponseEntity<List<Category>> findAllCategories() {
+    public ResponseEntity<List<CategoryResponse>> findAllCategories() {
         List<Category> categories = categoryService.findAll();
-        return ResponseEntity.ok(categories);
+        return ResponseEntity.ok(categories
+                .stream()
+                .map(CategoryMapper::toCategoryResponse)
+                .toList());
+    }
+
+    @Operation(summary = "Get category by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Category found"),
+            @ApiResponse(responseCode = "404", description = "Category not found")
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
+        Category category = categoryService.getById(id);
+
+        if (category == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(CategoryMapper.toCategoryResponse(category));
     }
 
     @Operation(summary = "Delete category by id")
