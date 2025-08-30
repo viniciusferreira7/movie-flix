@@ -21,10 +21,10 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 100, nullable = false, unique = true)
+    @Column(length = 255, nullable = false, unique = true)
     private String title;
 
-    @Column(length = 300)
+    @Column(length = 500)
     private String description;
 
     @Column(name = "release_date")
