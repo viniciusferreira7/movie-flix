@@ -38,7 +38,7 @@ public class StreamingController {
             @ApiResponse(responseCode = "200", description = "List of streaming"),
     })
     @GetMapping
-    public ResponseEntity<List<StreamingResponse>> findAllStreamings() {
+    public ResponseEntity<List<StreamingResponse>> findAllStreaming() {
         List<Streaming> streaming = streamingService.findAll();
         return ResponseEntity.ok(streaming
                 .stream()
