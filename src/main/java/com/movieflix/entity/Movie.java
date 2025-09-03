@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -21,7 +22,7 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 255, nullable = false, unique = true)
+    @Column(length = 255, nullable = false)
     private String title;
 
     @Column(length = 500)
@@ -39,6 +40,22 @@ public class Movie {
     @UpdateTimestamp
     @Column(name = "updated_date")
     private LocalDateTime updatedAt;
+
+    @ManyToMany
+    @JoinTable(
+            name = "movie_category",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories;
+
+    @ManyToMany
+    @JoinTable(
+            name = "movie_streaming",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "streaming_id")
+    )
+    private List<Streaming> streaming;
 
 
 }
