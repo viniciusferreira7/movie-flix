@@ -79,7 +79,6 @@ src/main/java/dev/flix/
 - Java 17+
 - PostgreSQL 15+
 - Maven 3.8+
-- Swagger
 
 ## How to Run
 
