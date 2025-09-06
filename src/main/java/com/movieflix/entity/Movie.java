@@ -34,11 +34,11 @@ public class Movie {
     private double rating;
 
     @CreationTimestamp
-    @Column(name = "created_date")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_date")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @ManyToMany

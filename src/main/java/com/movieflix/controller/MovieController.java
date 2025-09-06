@@ -40,7 +40,10 @@ public class MovieController {
     })
     @GetMapping
     public ResponseEntity<List<MovieResponse>> getMovies(){
-        List<MovieResponse> moviesResponses = movieService.getMovies().stream().map(MovieMapper::toMovieResponse).toList();
+        List<MovieResponse> moviesResponses = movieService.getMovies()
+                .stream()
+                .map(MovieMapper::toMovieResponse)
+                .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(moviesResponses);
     }
