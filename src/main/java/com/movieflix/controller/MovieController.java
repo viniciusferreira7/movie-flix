@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/movies")
@@ -36,7 +37,7 @@ public class MovieController {
 
     @Operation(summary = "Get all movies")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Get movies")
+            @ApiResponse(responseCode = "200", description = "Return movies")
     })
     @GetMapping
     public ResponseEntity<List<MovieResponse>> getMovies(){
@@ -46,5 +47,20 @@ public class MovieController {
                 .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(moviesResponses);
+    }
+
+    @Operation(summary = "Get movie by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Return movie"),
+            @ApiResponse(responseCode = "4004", description = "Movie not found")
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<MovieResponse> getMovies(@PathVariable Long id){
+        Optional<Movie> movie = movieService.getById(id);
+
+        return movie.map(value ->
+                ResponseEntity.ok(MovieMapper.toMovieResponse(value)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+
     }
 }

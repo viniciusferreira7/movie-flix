@@ -12,7 +12,7 @@ public record MovieRequest(
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
         LocalDate releaseDate,
-        
+
         double rating,
         List<Long> categories,
         List<Long> streaming
