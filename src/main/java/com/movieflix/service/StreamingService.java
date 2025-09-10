@@ -5,6 +5,7 @@ import com.movieflix.repository.StreamingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StreamingService {
@@ -22,8 +23,8 @@ public class StreamingService {
         return streamingRepository.findAll();
     }
 
-    public Streaming getById(Long id){
-        return streamingRepository.findById(id).orElse(null);
+    public Optional<Streaming> getById(Long id){
+        return streamingRepository.findById(id);
     }
 
     public boolean deleteById(Long id) {

@@ -5,6 +5,7 @@ import com.movieflix.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -22,8 +23,8 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category getById(Long id){
-        return categoryRepository.findById(id).orElse(null);
+    public Optional<Category> getById(Long id){
+        return categoryRepository.findById(id);
     }
 
     public boolean deleteById(Long id) {

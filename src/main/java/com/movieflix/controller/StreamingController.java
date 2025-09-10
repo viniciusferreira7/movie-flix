@@ -2,7 +2,9 @@ package com.movieflix.controller;
 
 import com.movieflix.controller.request.StreamingRequest;
 import com.movieflix.controller.response.StreamingResponse;
+import com.movieflix.entity.Category;
 import com.movieflix.entity.Streaming;
+import com.movieflix.mapper.CategoryMapper;
 import com.movieflix.mapper.StreamingMapper;
 import com.movieflix.service.StreamingService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/streaming")
@@ -53,13 +56,11 @@ public class StreamingController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<StreamingResponse> getStreamingById(@PathVariable Long id) {
-        Streaming streaming = streamingService.getById(id);
+        Optional<Streaming> streaming = streamingService.getById(id);
 
-        if (streaming == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        return ResponseEntity.ok(StreamingMapper.toStreamingResponse(streaming));
+        return streaming.map(value ->
+                        ResponseEntity.ok(StreamingMapper.toStreamingResponse(value)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @Operation(summary = "Delete streaming by id")

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -53,13 +54,12 @@ public class CategoryController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
-        Category category = categoryService.getById(id);
+        Optional<Category> category = categoryService.getById(id);
 
-        if (category == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        return category.map(value ->
+                ResponseEntity.ok(CategoryMapper.toCategoryResponse(value)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 
-        return ResponseEntity.ok(CategoryMapper.toCategoryResponse(category));
     }
 
     @Operation(summary = "Delete category by id")
