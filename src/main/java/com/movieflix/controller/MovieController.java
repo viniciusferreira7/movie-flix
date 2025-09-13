@@ -98,4 +98,19 @@ public class MovieController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Get movies by category")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Return movies filtered by category")
+    })
+    @GetMapping("/search")
+    public ResponseEntity<List<MovieResponse>> getMoviesByCategoryId(@RequestParam Long category){
+        List<MovieResponse> moviesResponses = movieService.getMoviesByCategoryId(category)
+                .stream()
+                .map(MovieMapper::toMovieResponse)
+                .toList();
+
+        return ResponseEntity.status(HttpStatus.OK).body(moviesResponses);
+    }
+
 }

@@ -97,4 +97,8 @@ public class MovieService {
         return false;
     }
 
+    public List<Movie> getMoviesByCategoryId(Long categoryId){
+        return movieRepository.findMoviesByCategories(List.of(Category.builder().id(categoryId).build()));
+    }
+
 }
