@@ -87,4 +87,14 @@ public class MovieService {
         return streamingFound;
     }
 
+    public boolean deleteById(Long id){
+        if(movieRepository.existsById(id)){
+             movieRepository.deleteById(id);
+
+             return true;
+        }
+
+        return false;
+    }
+
 }

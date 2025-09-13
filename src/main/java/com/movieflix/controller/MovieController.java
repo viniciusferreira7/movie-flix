@@ -82,4 +82,20 @@ public class MovieController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
+
+    @Operation(summary = "Delete movie by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Movie deleted"),
+            @ApiResponse(responseCode = "404", description = "Movie not found")
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMovie(@PathVariable Long id) {
+        boolean deleted = movieService.deleteById(id);
+
+        if (!deleted) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.noContent().build();
+    }
 }
