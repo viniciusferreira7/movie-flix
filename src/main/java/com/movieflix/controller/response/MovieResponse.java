@@ -7,14 +7,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Builder
-public record MovieResponse (Long id,
-                             String title,
-                             String description,
+public record MovieResponse (
+        Long id,
+        String title,
+        String description,
 
-                             @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
-                             LocalDate releaseDate,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
+        LocalDate releaseDate,
 
-                             Double rating,
-                             List<CategoryResponse> categories,
-                             List<StreamingResponse> streaming
-                             ) {}
+        Double rating,
+        List<CategoryResponse> categories,
+        List<StreamingResponse> streaming
+ ) {}

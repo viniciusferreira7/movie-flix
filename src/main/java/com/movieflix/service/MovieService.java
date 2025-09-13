@@ -1,5 +1,6 @@
 package com.movieflix.service;
 
+import com.movieflix.controller.request.MovieRequest;
 import com.movieflix.entity.Category;
 import com.movieflix.entity.Movie;
 import com.movieflix.entity.Streaming;
@@ -27,12 +28,49 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
+
+    public Optional<Movie> getById(Long id){
+        return movieRepository.findById(id);
+    }
+
+    public Optional<Movie> update(Long id, Movie updateMovie){
+        Optional<Movie> optMovie = movieRepository.findById(id);
+
+        if(optMovie.isPresent()){
+            List<Category> categories = this.findCategories(updateMovie.getCategories());
+            List<Streaming> streaming = this.findStreaming(updateMovie.getStreaming());
+
+
+            Movie movie = optMovie.get();
+            movie.setId(id);
+            movie.setTitle(updateMovie.getTitle());
+            movie.setDescription(updateMovie.getDescription());
+            movie.setReleaseDate(updateMovie.getReleaseDate());
+
+            movie.getCategories().clear();
+            movie.getCategories().addAll(categories);
+
+            movie.getStreaming().clear();
+            movie.getStreaming().addAll(streaming);
+
+
+
+            movieRepository.save(movie);
+
+            return Optional.of(movie);
+
+        }
+
+        return Optional.empty();
+    }
+
+
     private List<Category> findCategories(List<Category> categories) {
         List<Category> categoriesFound = new ArrayList<>();
 
         categories.forEach(category ->
-            categoryService.getById(category.getId())
-                    .ifPresent(categoriesFound::add)
+                categoryService.getById(category.getId())
+                        .ifPresent(categoriesFound::add)
         );
 
         return categoriesFound;
@@ -42,15 +80,11 @@ public class MovieService {
         List<Streaming> streamingFound = new ArrayList<>();
 
         streaming.forEach(item ->
-            streamingService.getById(item.getId())
-                    .ifPresent(streamingFound::add)
+                streamingService.getById(item.getId())
+                        .ifPresent(streamingFound::add)
         );
 
         return streamingFound;
-    }
-
-    public Optional<Movie> getById(Long id){
-        return movieRepository.findById(id);
     }
 
 }

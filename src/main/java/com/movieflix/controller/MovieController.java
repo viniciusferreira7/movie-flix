@@ -52,7 +52,7 @@ public class MovieController {
     @Operation(summary = "Get movie by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Return movie"),
-            @ApiResponse(responseCode = "4004", description = "Movie not found")
+            @ApiResponse(responseCode = "404", description = "Movie not found")
     })
     @GetMapping("/{id}")
     public ResponseEntity<MovieResponse> getMovies(@PathVariable Long id){
@@ -61,6 +61,25 @@ public class MovieController {
         return movie.map(value ->
                 ResponseEntity.ok(MovieMapper.toMovieResponse(value)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+
+    }
+
+    @Operation(summary = "Update movie")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Movie was successfully update"),
+            @ApiResponse(responseCode = "404", description = "Movie not found")
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<MovieResponse> getMovies(@PathVariable Long id, @RequestBody MovieRequest movieRequest){
+        Optional<Movie> movie = movieService.getById(id);
+
+        if(movie.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        movieService.update(id, MovieMapper.toMovie(movieRequest));
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
 }
