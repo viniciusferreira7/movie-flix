@@ -3,6 +3,7 @@ package com.movieflix.controller;
 import com.movieflix.controller.request.LoginRequest;
 import com.movieflix.controller.request.UserRequest;
 import com.movieflix.controller.response.UserResponse;
+import com.movieflix.entity.User;
 import com.movieflix.mapper.UserMapper;
 import com.movieflix.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
 
     @Operation(summary = "Register an user")
     @ApiResponses(value = {
@@ -38,8 +43,9 @@ public class AuthController {
     })
     @PostMapping("/login")
     public ResponseEntity<Void> register(LoginRequest loginRequest){
-        userService.register(UserMapper.toUser(loginRequest));
+        UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password());
+        Authentication authentication = authenticationManager.authenticate(userAndPass);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        User user = (User) authentication.getPrincipal();
     }
 }
