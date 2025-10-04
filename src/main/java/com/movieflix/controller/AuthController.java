@@ -1,8 +1,9 @@
 package com.movieflix.controller;
 
+import com.movieflix.config.TokenService;
 import com.movieflix.controller.request.LoginRequest;
 import com.movieflix.controller.request.UserRequest;
-import com.movieflix.controller.response.UserResponse;
+import com.movieflix.controller.response.LoginResponse;
 import com.movieflix.entity.User;
 import com.movieflix.mapper.UserMapper;
 import com.movieflix.service.UserService;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
     @Operation(summary = "Register an user")
     @ApiResponses(value = {
@@ -39,13 +41,21 @@ public class AuthController {
 
     @Operation(summary = "Login with email and password")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Login was successfully completed")
+            @ApiResponse(responseCode = "204", description = "Login was successfully completed"),
+            @ApiResponse(responseCode = "400", description = "Invalid credentials")
     })
     @PostMapping("/login")
-    public ResponseEntity<Void> register(LoginRequest loginRequest){
+    public ResponseEntity<LoginResponse> register(LoginRequest loginRequest){
         UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password());
         Authentication authentication = authenticationManager.authenticate(userAndPass);
 
         User user = (User) authentication.getPrincipal();
+
+        String token = tokenService.generateToken(user);
+
+        LoginResponse accessToken = LoginResponse.builder().access_token(token).build();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(accessToken);
     }
+
 }
