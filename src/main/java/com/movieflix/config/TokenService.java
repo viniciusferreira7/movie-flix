@@ -23,7 +23,7 @@ public class TokenService {
 
         return JWT.create()
                 .withSubject(user.getEmail())
-                .withClaim("userId", user.getId())
+                .withClaim("id", user.getId())
                 .withClaim("name", user.getName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000 + 60 + 60 + 24 + 2)) // 2 days
                 .withIssuedAt(Instant.now())

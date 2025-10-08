@@ -41,7 +41,7 @@ public class AuthController {
 
     @Operation(summary = "Login with email and password")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Login was successfully completed"),
+            @ApiResponse(responseCode = "200", description = "Login was successfully completed"),
             @ApiResponse(responseCode = "400", description = "Invalid credentials")
     })
     @PostMapping("/login")
