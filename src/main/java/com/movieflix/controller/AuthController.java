@@ -3,6 +3,7 @@ package com.movieflix.controller;
 import com.movieflix.config.TokenService;
 import com.movieflix.controller.request.LoginRequest;
 import com.movieflix.controller.request.UserRequest;
+import com.movieflix.controller.response.ErrorResponse;
 import com.movieflix.controller.response.LoginResponse;
 import com.movieflix.entity.User;
 import com.movieflix.exception.UsernameOrPasswordInvalid;
@@ -46,19 +47,24 @@ public class AuthController {
 
     @Operation(
             summary = "Authenticate a user with email and password",
-            description = "Returns a JWT access token if the credentials are valid."
+            description = "Authenticates a user by verifying their credentials and returns a JWT access token if valid."
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
                     description = "Successfully authenticated. Returns a JWT access token.",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = LoginResponse.class))
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = LoginResponse.class)
+                    )
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "Invalid email or password.",
-                    content = @Content
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )
             )
     })
     @PostMapping("/login")
@@ -80,6 +86,7 @@ public class AuthController {
             throw new UsernameOrPasswordInvalid("Invalid credentials");
         }
     }
+
 
 
 }

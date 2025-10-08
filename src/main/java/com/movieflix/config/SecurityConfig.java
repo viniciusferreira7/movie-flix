@@ -1,5 +1,6 @@
 package com.movieflix.config;
 
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,9 +28,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/docs/**").permitAll()
+                        authorize
+                            .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                                .requestMaqtchers("/v3/api-docs/**", "/swagger-ui/**", "/docs/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
