@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class StreamingController {
             @ApiResponse(responseCode = "201", description = "Streaming was successfully created")
     })
     @PostMapping
-    public ResponseEntity<Void> createStreaming(@RequestBody StreamingRequest streaming) {
+    public ResponseEntity<Void> createStreaming(@Valid @RequestBody StreamingRequest streaming) {
         streamingService.create(StreamingMapper.toStreaming(streaming));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

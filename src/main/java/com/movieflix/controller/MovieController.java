@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class MovieController {
             @ApiResponse(responseCode = "201", description = "Movie was successfully registered")
     })
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody MovieRequest movieRequest){
+    public ResponseEntity<Void> create(@Valid @RequestBody MovieRequest movieRequest){
         Movie movie = MovieMapper.toMovie(movieRequest);
 
         movieService.create(movie);
@@ -72,7 +73,7 @@ public class MovieController {
             @ApiResponse(responseCode = "404", description = "Movie not found")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<MovieResponse> getMovies(@PathVariable Long id, @RequestBody MovieRequest movieRequest){
+    public ResponseEntity<MovieResponse> getMovies(@PathVariable Long id, @Valid @RequestBody MovieRequest movieRequest){
         Optional<Movie> movie = movieService.getById(id);
 
         if(movie.isEmpty()){

@@ -32,7 +32,7 @@ public class SecurityConfig {
                             .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                                .requestMaqtchers("/v3/api-docs/**", "/swagger-ui/**", "/docs/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/docs/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
