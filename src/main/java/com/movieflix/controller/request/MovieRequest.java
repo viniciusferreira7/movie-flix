@@ -15,7 +15,6 @@ public record MovieRequest(
         String description,
 
         @NotNull(message = "Release date is required.")
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
         LocalDate releaseDate,
 
         @NotNull(message = "Rating is required.")
