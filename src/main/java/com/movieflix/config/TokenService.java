@@ -25,7 +25,7 @@ public class TokenService {
                 .withSubject(user.getEmail())
                 .withClaim("id", user.getId())
                 .withClaim("name", user.getName())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1000 + 60 + 60 + 24 + 2)) // 2 days
+                .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 2)) // 2 days
                 .withIssuedAt(Instant.now())
                 .withIssuer("movieflix-api")
                 .sign(algorithm);
