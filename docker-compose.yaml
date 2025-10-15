@@ -22,6 +22,25 @@ services:
     volumes:
       - pg_data:/bitnami/postgresql
 
+  movieflix-app:
+    container_name: movieflix-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://movieflix-postgresql:5432/${SPRING_DATASOURCE_NAME}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+    depends_on:
+      movieflix-postgresql:
+        condition: service_healthy
+    networks:
+      - movieflix-network
+    restart: unless-stopped
+
 networks:
   movieflix-network:
     driver: bridge
