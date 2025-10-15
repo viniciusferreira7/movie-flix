@@ -1,4 +1,3 @@
-# ⚠️ WIP
 # API Flix
 
 REST API for managing a movie catalog and streaming services, built with Spring Boot and a modern architecture.
@@ -19,7 +18,7 @@ The project follows a layered architecture:
 
 ```
 
-src/main/java/dev/flix/
+src/main/java/com/movieflix/
 ├── config/         # Spring and Security configurations
 ├── controller/     # REST Controllers
 ├── entity/         # JPA Entities
@@ -82,13 +81,6 @@ src/main/java/dev/flix/
 
 ## How to Run
 
-The project includes scripts to simplify build and execution:
-
-### Available Scripts
-
-- `build.sh`: Builds the project and generates the JAR file
-- `start.sh`: Starts the application using the generated JAR
-
 ### Step by Step
 
 1. Clone the repository
@@ -96,27 +88,17 @@ The project includes scripts to simplify build and execution:
 git clone [repository-url]
 ````
 
-2. Configure PostgreSQL in the `application.properties` file:
+2. Configure PostgreSQL in the `application.yaml` file:
 
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/flix
-spring.datasource.username=your_username
-spring.datasource.password=your_password
+```yaml
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/flix
+    username: your_username
+    password: your_password
 ```
 
-3. Build the project:
-
-```bash
-./build.sh
-```
-
-4. Start the application:
-
-```bash
-./start.sh
-```
-
-Alternatively, you can run manually:
+3. Run the application:
 
 ```bash
 # Manual build
@@ -138,31 +120,31 @@ All routes are fully documented with **Swagger/OpenAPI** and can be accessed at:
 
 #### Authentication
 
-* POST `/auth/register` - Register new user
-* POST `/auth/login` - User login
+* POST `/api/auth/register` - Register new user
+* POST `/api/auth/login` - User login
 
 #### Categories
 
-* POST `/flix/category` - Create category
-* GET `/flix/category` - List categories
-* GET `/flix/category/{id}` - Get category by ID
-* DELETE `/flix/category/{id}` - Delete category
+* POST `/api/categories` - Create category
+* GET `/api/categories` - List categories
+* GET `/api/categories/{id}` - Get category by ID
+* DELETE `/api/categories/{id}` - Delete category
 
 #### Streaming Services
 
-* POST `/flix/stream-service` - Create service
-* GET `/flix/stream-service` - List services
-* GET `/flix/stream-service/{id}` - Get service by ID
-* DELETE `/flix/stream-service/{id}` - Delete service
+* POST `/api/streaming` - Create streaming service
+* GET `/api/streaming` - List streaming services
+* GET `/api/streaming/{id}` - Get streaming service by ID
+* DELETE `/api/streaming/{id}` - Delete streaming service
 
 #### Movies
 
-* POST `/flix/movie` - Create movie
-* GET `/flix/movie` - List movies
-* GET `/flix/movie/{id}` - Get movie by ID
-* GET `/flix/movie/search?category={id}` - Search movies by category
-* PUT `/flix/movie` - Update movie
-* DELETE `/flix/movie/{id}` - Delete movie
+* POST `/api/movies` - Create movie
+* GET `/api/movies` - List movies
+* GET `/api/movies/{id}` - Get movie by ID
+* PUT `/api/movies/{id}` - Update movie
+* DELETE `/api/movies/{id}` - Delete movie
+* GET `/api/movies/search?category={id}` - Search movies by category
 
 ## Contributing
 
@@ -178,4 +160,4 @@ All routes are fully documented with **Swagger/OpenAPI** and can be accessed at:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is under development.
